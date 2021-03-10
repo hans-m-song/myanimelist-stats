@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -65,8 +66,16 @@ func (s *Session) GetSessionTokens() {
 		}).Fatal(err)
 	}
 
+	raw, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		apiLogger.WithFields(logrus.Fields{
+			"status": "GetSessionTokens",
+			"step":   "ioutil.ReadAll",
+		}).Fatal(err)
+	}
+
 	data := &authResponse{}
-	err = ParseResponse(resp, data)
+	err = json.Unmarshal(raw, data)
 	if err != nil {
 		apiLogger.WithFields(logrus.Fields{
 			"status": "GetSessionTokens",

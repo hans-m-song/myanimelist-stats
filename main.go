@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"myanimelist-stats/api"
 	"myanimelist-stats/scraper"
@@ -21,5 +22,6 @@ func main() {
 
 	data := scraper.Seasonal(session.AccessToken, 2020, "winter", 2)
 
-	fmt.Println(data)
+	parsed, _ := json.Marshal(data)
+	fmt.Println(string(parsed))
 }
