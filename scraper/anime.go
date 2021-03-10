@@ -3,7 +3,7 @@ package scraper
 import (
 	"encoding/json"
 	"fmt"
-	"myanimelist-scraper/api"
+	"myanimelist-stats/api"
 	"net/http"
 	"strconv"
 	"strings"

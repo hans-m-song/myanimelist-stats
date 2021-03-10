@@ -1,4 +1,4 @@
-module myanimelist-scraper
+module myanimelist-stats
 
 go 1.16
 

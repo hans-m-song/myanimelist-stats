@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"myanimelist-scraper/api"
-	"myanimelist-scraper/scraper"
+	"myanimelist-stats/api"
+	"myanimelist-stats/scraper"
 
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
