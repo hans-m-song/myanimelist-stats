@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 )
 
-// Season aired
-type Season struct {
+// Period aired
+type Period struct {
 	Year   json.Number `json:"year"`
 	Season string      `json:"season"`
 }
@@ -28,7 +28,7 @@ type Anime struct {
 	Status          string      `json:"status"`
 	Genre           []Genre     `json:"genres"`
 	NumEpisodes     json.Number `json:"num_episodes"`
-	StartSeason     Season      `json:"start_season"`
+	StartSeason     Period      `json:"start_season"`
 	Source          string      `json:"source"`
 	// ignored
 	// MainPicture     map[string]string `json:"main_picture"`
@@ -49,7 +49,7 @@ type DataNode struct {
 type APIResponse struct {
 	Data   []DataNode `json:"data"`
 	Paging Paging     `json:"paging"`
-	Season Season     `json:"season"`
+	Season Period     `json:"season"`
 }
 
 // ErrorResponse indicates api request failed

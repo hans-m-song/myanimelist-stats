@@ -1,9 +1,8 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	"myanimelist-stats/api"
+	"myanimelist-stats/database"
 	"myanimelist-stats/scraper"
 
 	"github.com/joho/godotenv"
@@ -19,9 +18,10 @@ func main() {
 	}
 
 	session := api.Authorize()
+	db := database.NewDatabase()
+	defer db.Close()
 
-	data := scraper.Seasonal(session.AccessToken, 2020, "winter", 2)
+	data := scraper.Seasonal(session.AccessToken, 2020, "winter", 1)
 
-	parsed, _ := json.Marshal(data)
-	fmt.Println(string(parsed))
+	db.AddAnime(data.Data[0].Node)
 }
