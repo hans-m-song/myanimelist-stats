@@ -8,22 +8,17 @@ CREATE TABLE genre
   name text    NOT NULL
 );
 
-CREATE TABLE period
-(
-  year   integer NOT NULL,
-  season text    NOT NULL,
-  PRIMARY KEY (year, season)
-);
-
 CREATE TABLE anime
 (
   id                integer   PRIMARY KEY NOT NULL,
   title             text      NOT NULL,
-  mean              integer   NOT NULL,
+  mean              numeric   NOT NULL,
   rank              integer   NOT NULL,
   popularity        integer   NOT NULL,
   num_scoring_users integer   NOT NULL,
   media_type        text      NOT NULL,
   status            text      NOT NULL,
-  genre             integer[] NOT NULL
+  genre             integer[] NOT NULL,
+  year              integer   NOT NULL,
+  season            text      NOT NULL
 );

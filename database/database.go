@@ -75,7 +75,7 @@ func (db *Database) Close() {
 // Flush Dispatches queued batch queries
 func (db *Database) Flush() {
 	if db.batch != nil {
-		dbLogger.Info("flusing ", db.batch.Len(), " actions")
+		dbLogger.Info("flushing ", db.batch.Len(), " actions")
 		result := db.Conn.SendBatch(context.Background(), db.batch)
 		err := result.Close()
 		if err != nil {
@@ -105,15 +105,14 @@ func (db *Database) AddAnime(anime scraper.Anime) {
 		db.AddGenre(genre)
 	}
 
-	db.AddPeriod(anime.StartSeason)
 	genreList := make([]string, len(anime.Genre))
 	for i, genre := range anime.Genre {
 		genreList[i] = string(genre.ID)
 	}
 	query := fmt.Sprintf(
 		"INSERT INTO anime "+
-			"(id, title, mean, rank, popularity, num_scoring_users, media_type, status, genre)"+
-			"VALUES (%s, '%s', %s, %s, %s, %s, '%s', '%s', '{%s}')"+
+			"(id, title, mean, rank, popularity, num_scoring_users, media_type, status, genre, year, season)"+
+			"VALUES (%s, '%s', %s, %s, %s, %s, '%s', '%s', '{%s}', %s, '%s')"+
 			"ON CONFLICT (id) DO NOTHING",
 		anime.ID,
 		sanitise(anime.Title),
@@ -124,30 +123,12 @@ func (db *Database) AddAnime(anime scraper.Anime) {
 		anime.MediaType,
 		anime.Status,
 		strings.Join(genreList, ", "),
+		anime.StartSeason.Year,
+		anime.StartSeason.Season,
 	)
 
 	db.batch.Queue(query)
 
-}
-
-// AddPeriod inserts a record in the db
-func (db *Database) AddPeriod(period scraper.Period) {
-	logger := dbLogger.WithField("step", "AddPeriod")
-	logger.Logger.SetLevel(logrus.TraceLevel)
-
-	_, err := db.Conn.Exec(context.Background(),
-		fmt.Sprintf(
-			"INSERT INTO period (year, season)"+
-				"VALUES (%s, '%s')"+
-				"ON CONFLICT (year, season) DO NOTHING",
-			period.Year,
-			period.Season,
-		),
-	)
-
-	if err != nil {
-		logger.Fatal(err)
-	}
 }
 
 // AddGenre inserts a record in the db
