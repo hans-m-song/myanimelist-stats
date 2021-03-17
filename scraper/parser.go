@@ -36,8 +36,8 @@ type Anime struct {
 
 // Paging indicates position of dataframe
 type Paging struct {
-	Previous string `json:"previous"`
-	Next     string `json:"next"`
+	Previous *string `json:"previous"`
+	Next     *string `json:"next"`
 }
 
 // DataNode contains data given by myanimelist api

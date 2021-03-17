@@ -10,9 +10,9 @@ CREATE TABLE genre
 
 CREATE TABLE period
 (
-  id     SERIAL    PRIMARY KEY NOT NULL,
   year   integer NOT NULL,
-  season text    NOT NULL
+  season text    NOT NULL,
+  PRIMARY KEY (year, season)
 );
 
 CREATE TABLE anime

@@ -15,33 +15,8 @@ const endpoint = "https://api.myanimelist.net/v2"
 
 var scraperLogger = logrus.New().WithField("context", "scraper")
 
-// Seasonal fetches anime by season
-func Seasonal(
-	accessToken string,
-	year int,
-	season string,
-	limit int,
-) APIResponse {
-	fields := []string{
-		"id",
-		"title",
-		"mean",
-		"rank",
-		"popularity",
-		"num_scoring_users",
-		"media_type",
-		"status",
-		"genres",
-		"num_episodes",
-		"start_season",
-		"source",
-		"statistics",
-	}
-
-	query := "fields=" + strings.Join(fields, ",")
-
-	url := fmt.Sprintf("%s/anime/season/%s/%s?%s", endpoint, strconv.Itoa(year), season, query)
-	scraperLogger.WithField("url", url).Info("requesting seasonal endpoint")
+func requestAndParseSeasonal(accessToken string, url string) []DataNode {
+	scraperLogger.Logger.SetLevel(logrus.TraceLevel)
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -71,6 +46,48 @@ func Seasonal(
 	if err != nil {
 		scraperLogger.Fatal(err, string(data))
 	}
+
+	scraperLogger.Debug("received ", len(parsed.Data), " entries")
+
+	if parsed.Paging.Next != nil && *parsed.Paging.Next != "" {
+		more := requestAndParseSeasonal(accessToken, *parsed.Paging.Next)
+		return append(parsed.Data, more...)
+	}
+
+	return parsed.Data
+}
+
+// Seasonal fetches anime by season
+func Seasonal(
+	accessToken string,
+	year int,
+	season string,
+) []DataNode {
+	scraperLogger.Logger.SetLevel(logrus.TraceLevel)
+
+	fields := []string{
+		"id",
+		"title",
+		"mean",
+		"rank",
+		"popularity",
+		"num_scoring_users",
+		"media_type",
+		"status",
+		"genres",
+		"num_episodes",
+		"start_season",
+		"source",
+		"statistics",
+	}
+
+	query := "fields=" + strings.Join(fields, ",") + "&limit=100"
+
+	url := fmt.Sprintf("%s/anime/season/%s/%s?%s", endpoint, strconv.Itoa(year), season, query)
+	scraperLogger.Info("requesting seasonal endpoint")
+
+	parsed := requestAndParseSeasonal(accessToken, url)
+	scraperLogger.Debug("received ", len(parsed), " total entries")
 
 	return parsed
 }
