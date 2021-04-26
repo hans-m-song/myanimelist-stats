@@ -24,7 +24,7 @@ export const theme: Theme = {
 export const defaultProps = {
   width: 900,
   height: 500,
-  margin: {top: 20, bottom: 20, left: 20, right: 20},
-  colors: colorArray,
+  margin: {top: 40, bottom: 40, left: 40, right: 40},
+  colors: {scheme: 'category10' as 'category10'},
   theme,
 };

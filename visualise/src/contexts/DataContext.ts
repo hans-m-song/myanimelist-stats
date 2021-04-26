@@ -4,8 +4,8 @@ import anime from '../data/anime.json';
 import demographics from '../data/demographics.json';
 import genres from '../data/genres.json';
 
-const years = [2015, 2016, 2017, 2018, 2019, 2020];
-const seasons = ['winter', 'spring', 'summer', 'fall'];
+export const years = [2015, 2016, 2017, 2018, 2019, 2020];
+export const seasons = ['winter', 'spring', 'summer', 'fall'];
 const periods: string[] = [];
 years.forEach((year) => {
   seasons.forEach((season) => {
