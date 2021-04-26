@@ -1,4 +1,5 @@
 import {Bar} from '@nivo/bar';
+import {Stream} from '@nivo/stream';
 import React, {useContext} from 'react';
 import {DataContext} from '../contexts/DataContext';
 import {defaultProps} from '../theme';
@@ -22,16 +23,45 @@ export const MediaTypeDistribution = () => {
     ...data,
   }));
 
-  console.log(data);
-
   return (
     <div className="MediaTypeDistribution">
       <ChartTitle>Media Type distribution per Season</ChartTitle>
+      <Stream
+        {...defaultProps}
+        margin={{...defaultProps.margin, left: 70, bottom: 120}}
+        data={data}
+        keys={['tv', 'movie', 'ova']}
+        offsetType="none"
+        curve="linear"
+        legends={[
+          {
+            anchor: 'top-right',
+            direction: 'column',
+            translateY: 0,
+            itemWidth: 60,
+            itemHeight: 20,
+          },
+        ]}
+        axisLeft={{
+          legend: 'Number of anime in format',
+          legendPosition: 'middle',
+          legendOffset: -50,
+        }}
+        axisBottom={{
+          tickRotation: 90,
+          legend: 'Season',
+          legendPosition: 'middle',
+          legendOffset: 110,
+          format: (value) => periods[value as number],
+        }}
+      />
       <Bar
         {...defaultProps}
-        margin={{...defaultProps.margin, left: 70, right: 70, bottom: 120}}
+        margin={{...defaultProps.margin, left: 70, bottom: 120}}
         keys={['tv', 'movie', 'ova']}
         data={data}
+        labelSkipHeight={12}
+        labelTextColor="white"
         enableGridY
         axisLeft={{
           legend: 'Number of anime in format',
@@ -41,17 +71,17 @@ export const MediaTypeDistribution = () => {
         indexBy="period"
         axisBottom={{
           tickRotation: 90,
-          legend: 'Period',
+          legend: 'Season',
           legendPosition: 'middle',
           legendOffset: 110,
         }}
         legends={[
           {
             dataFrom: 'keys',
-            anchor: 'bottom-right',
+            anchor: 'top-right',
             direction: 'column',
-            translateX: 80,
-            itemWidth: 80,
+            translateY: 0,
+            itemWidth: 60,
             itemHeight: 20,
           },
         ]}

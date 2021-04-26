@@ -22,14 +22,14 @@ const Row = (props: {children?: ReactNode}) => (
 
 export const PopularityPerYear = () => {
   const {anime} = useContext(DataContext);
-  const {mean} = useContext(MetricContext);
+  const {mean, popularity} = useContext(MetricContext);
 
   const data = anime.map((anime) => ({
     id: anime.title,
     media_type: anime.media_type,
     group: `${anime.year}`,
     season: anime.season,
-    value: anime.popularity,
+    value: popularity.max - anime.popularity,
     mean: anime.mean,
   }));
 
@@ -38,9 +38,9 @@ export const PopularityPerYear = () => {
       <ChartTitle>Popularity of aired anime each year</ChartTitle>
       <SwarmPlot
         {...defaultProps}
-        width={1000}
-        height={700}
-        margin={{...defaultProps.margin, left: 120, bottom: 60, right: 50}}
+        width={700}
+        height={900}
+        margin={{...defaultProps.margin, top: 50, left: 80, bottom: 60}}
         data={data}
         colorBy={(node) => node.data.media_type}
         groups={years.map((year) => `${year}`)}
@@ -51,24 +51,25 @@ export const PopularityPerYear = () => {
           values: [mean.min, mean.max],
           sizes: [0.5, 10],
         }}
-        layout="horizontal"
+        axisRight={null}
+        axisTop={null}
         axisLeft={{
-          legend: 'Year',
-          tickSize: 40,
+          legend: 'Popularity Ranking',
           legendPosition: 'middle',
-          legendOffset: -100,
+          legendOffset: -60,
+          format: (value) => popularity.max - (value as number),
         }}
         axisBottom={{
-          legend: 'Popularity Ranking',
-          legendOffset: 50,
+          legend: 'Year',
           legendPosition: 'middle',
+          legendOffset: 50,
         }}
       />
       <div
         style={{
           position: 'absolute',
-          top: '1650px',
-          left: '880px',
+          top: '2870px',
+          left: '650px',
           backgroundColor: 'white',
           padding: '8px',
         }}
