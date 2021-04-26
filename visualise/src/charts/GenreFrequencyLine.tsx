@@ -38,7 +38,7 @@ export const GenreFrequencyLine = () => {
       <ChartTitle>Genre Frequency per Season</ChartTitle>
       <Line
         {...defaultProps}
-        margin={{top: 10, right: 90, bottom: 120, left: 50}}
+        margin={{top: 40, right: 90, bottom: 120, left: 50}}
         data={flattened}
         axisBottom={{
           legend: 'Time Period',
@@ -54,11 +54,11 @@ export const GenreFrequencyLine = () => {
         }}
         legends={[
           {
-            anchor: 'bottom-right',
-            direction: 'column',
-            itemWidth: 80,
+            anchor: 'top',
+            direction: 'row',
+            itemWidth: 90,
             itemHeight: 20,
-            translateX: 90,
+            translateY: -30,
           },
         ]}
       />

@@ -1,4 +1,5 @@
 import React from 'react';
+import {DemographicGenres} from './charts/DemographicGenres';
 import {DemographicMeanScore} from './charts/DemographicMeanScore';
 import {GenreFrequencyLine} from './charts/GenreFrequencyLine';
 import {GenreOverlapChord} from './charts/GenreOverlapChord';
@@ -7,6 +8,7 @@ import {PopularityPerYear} from './charts/PopularityPerYear';
 
 export const App = () => (
   <div className="App">
+    <DemographicGenres />
     <DemographicMeanScore />
     <MediaTypeDistribution />
     <PopularityPerYear />
