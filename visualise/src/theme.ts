@@ -1,5 +1,4 @@
 import {Theme} from '@nivo/core';
-import {colorArray} from './colors';
 
 export const theme: Theme = {
   axis: {
