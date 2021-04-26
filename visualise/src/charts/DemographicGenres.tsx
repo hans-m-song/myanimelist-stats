@@ -38,6 +38,15 @@ export const DemographicGenres = () => {
     }),
   );
 
+  const percentageData = data.map(({demographic, ...genres}) => {
+    const sum = Object.values(genres).reduce((sum, value) => sum + value, 0);
+    const result: Record<string, number> = {};
+    Object.entries(genres).forEach(([genre, value]) => {
+      result[genre] = Number(((value / sum) * 100).toFixed(2));
+    });
+    return {demographic, ...result};
+  });
+
   return (
     <div className="DemographicGenres">
       <ChartTitle>Genres of Anime Aired per Demographic</ChartTitle>
@@ -51,11 +60,12 @@ export const DemographicGenres = () => {
         labelTextColor="white"
         legends={[
           {
-            anchor: 'top-right',
+            anchor: 'top',
             dataFrom: 'keys',
-            direction: 'column',
+            direction: 'row',
             itemWidth: 80,
             itemHeight: 20,
+            translateY: -30,
           },
         ]}
         axisBottom={{
@@ -64,7 +74,37 @@ export const DemographicGenres = () => {
           legendOffset: 40,
         }}
         axisLeft={{
-          legend: 'Total Anime aired',
+          legend: 'Total anime aired',
+          legendPosition: 'middle',
+          legendOffset: -50,
+        }}
+      />
+      <Bar
+        {...defaultProps}
+        margin={{...defaultProps.margin, left: 60, bottom: 60}}
+        data={percentageData}
+        keys={Object.values(genres)}
+        labelFormat={(value) => `${value}%`}
+        indexBy="demographic"
+        labelSkipHeight={12}
+        labelTextColor="white"
+        legends={[
+          {
+            anchor: 'top',
+            dataFrom: 'keys',
+            direction: 'row',
+            itemWidth: 80,
+            itemHeight: 20,
+            translateY: -30,
+          },
+        ]}
+        axisBottom={{
+          legend: 'Demographic',
+          legendPosition: 'middle',
+          legendOffset: 40,
+        }}
+        axisLeft={{
+          legend: 'Percentage total anime aired ',
           legendPosition: 'middle',
           legendOffset: -50,
         }}
