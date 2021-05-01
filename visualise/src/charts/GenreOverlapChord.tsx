@@ -54,6 +54,7 @@ export const GenreOverlapChord = (props: GenreOverlapChordProps) => {
       <ChartTitle>Most Common Genre Combinations</ChartTitle>
       <Chord
         {...defaultProps}
+        layers={['ribbons', 'arcs', 'labels', 'legends']}
         width={500}
         height={500}
         keys={keys}
