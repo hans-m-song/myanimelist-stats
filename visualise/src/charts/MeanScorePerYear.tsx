@@ -1,6 +1,6 @@
 import {SwarmPlot} from '@nivo/swarmplot';
 import {ReactNode, useContext} from 'react';
-import {years, DataContext} from '../contexts/DataContext';
+import {DataContext} from '../contexts/DataContext';
 import {MetricContext} from '../contexts/MetricContext';
 import {defaultProps} from '../theme';
 import ChartTitle from './ChartTitle';
@@ -20,57 +20,57 @@ const Row = (props: {children?: ReactNode}) => (
   <div {...props} style={{display: 'flex', alignItems: 'center'}} />
 );
 
-export const PopularityPerYear = () => {
-  const {anime} = useContext(DataContext);
-  const {mean, popularity} = useContext(MetricContext);
+export const MeanScorePerYear = () => {
+  const {anime, periods} = useContext(DataContext);
+  const {popularity, num_scoring_users} = useContext(MetricContext);
 
   const data = anime.map((anime) => ({
     id: anime.title,
     media_type: anime.media_type,
-    group: `${anime.year}`,
-    season: anime.season,
-    value: popularity.max - anime.popularity,
+    group: `${anime.year} ${anime.season}`,
     mean: anime.mean,
+    popularity: popularity.max - anime.popularity,
+    numScores: anime.num_scoring_users,
   }));
 
   return (
     <div className="PopularityPerYear">
-      <ChartTitle>Popularity of aired anime each year</ChartTitle>
+      <ChartTitle>Mean score of aired anime each year</ChartTitle>
       <SwarmPlot
         {...defaultProps}
-        width={700}
+        width={1000}
         height={900}
-        margin={{...defaultProps.margin, top: 50, left: 80, bottom: 60}}
+        margin={{...defaultProps.margin, top: 50, left: 80, bottom: 120}}
         data={data}
         colorBy={(node) => node.data.media_type}
-        groups={years.map((year) => `${year}`)}
+        groups={periods}
         forceStrength={0.1}
-        value="value"
+        value="mean"
         size={{
-          key: 'mean',
-          values: [mean.min, mean.max],
-          sizes: [0.5, 10],
+          key: 'numScores',
+          values: [num_scoring_users.min, num_scoring_users.max],
+          sizes: [3, 15],
         }}
         axisRight={null}
         axisTop={null}
         axisLeft={{
-          legend: 'Popularity Ranking',
+          legend: 'Mean score',
           legendPosition: 'middle',
           legendOffset: -60,
-          format: (value) => popularity.max - (value as number),
         }}
         axisBottom={{
-          legend: 'Year',
+          legend: 'Season',
           legendPosition: 'middle',
-          legendOffset: 50,
+          tickRotation: 90,
+          legendOffset: 100,
         }}
       />
       <div style={{position: 'relative'}}>
         <div
           style={{
             position: 'absolute',
-            top: '-150px',
-            left: '600px',
+            top: '-220px',
+            left: '900px',
             backgroundColor: 'white',
             padding: '8px',
           }}
